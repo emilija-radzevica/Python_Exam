@@ -88,6 +88,7 @@ while running:
     if not game_over:
         if guess_word[0] == list(target_word):  # Compare only the word, not the colors
             message = "You won!"
+            print("hello winner")
             game_over = True
             current_win_streak += 1
             if current_win_streak > best_win_streak:
@@ -128,7 +129,6 @@ while running:
         draw_button("Close", close_button_position)
 
     pygame.display.update()
-
 # Clean up
 pygame.quit()
 sys.exit()
