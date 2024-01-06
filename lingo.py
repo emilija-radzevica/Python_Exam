@@ -7,10 +7,10 @@ import random
 pygame.init()
 
 # Set up the game window
-window_width = 800
+window_width = 700
 window_height = 600
 window = pygame.display.set_mode((window_width, window_height))
-pygame.display.set_caption("Wordle")
+pygame.display.set_caption("Lingo 2024")
 
 # Define colors
 BLACK = (0, 0, 0)
@@ -100,7 +100,7 @@ while running:
 
     # Render graphics
     window.fill(BLACK)
-    # Draw the win streaks
+    # 'Draw' the win streaks
     win_streak_surface = font.render(f"Best Win Streak: {best_win_streak}, Current Win Streak: {current_win_streak}", True, WHITE)
     window.blit(win_streak_surface, (20, 20))
     # Draw the attempts left
