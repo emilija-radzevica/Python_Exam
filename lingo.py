@@ -24,7 +24,9 @@ YELLOW = (255, 255, 0)
 # Define game variables
 with open('words.txt', 'r', encoding='utf-8') as f:
     word_list = [line.strip() for line in f]
-best_win_streak = 0
+with open('results.txt', 'r') as f:
+    lines = f.readlines()
+    best_win_streak = max(int(line.split()[-1]) for line in lines)
 current_win_streak = 0
 lives = 3
 target_word = random.choice(word_list)
