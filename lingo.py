@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Import the necessary modules
 import pygame
 import sys
@@ -10,7 +12,7 @@ pygame.init()
 window_width = 800
 window_height = 600
 window = pygame.display.set_mode((window_width, window_height))
-pygame.display.set_caption("Wordle")
+pygame.display.set_caption("Lingo")
 
 # Define colors
 BLACK = (0, 0, 0)
@@ -19,7 +21,7 @@ GREEN = (0, 255, 0)
 YELLOW = (255, 255, 0)
 
 # Define game variables
-word_list = ["apple", "grape", "lemon", "peach", "berry"]
+word_list = ["ābols"]
 best_win_streak = 0
 current_win_streak = 0
 lives = 3
@@ -39,7 +41,7 @@ restart_button_position = (window_width // 2 - button_width // 2, window_height 
 close_button_position = (window_width // 2 - button_width // 2, window_height - button_height)
 
 # Create a font object
-font = pygame.font.Font(None, 36)
+font = pygame.font.Font('arial.ttf', 16)
 
 # Function to draw a button
 def draw_button(text, position):
@@ -80,8 +82,8 @@ while running:
                 message_lines = []  # Reset the message lines
             elif close_button_position[0] <= mouse_pos[0] <= close_button_position[0] + button_width and close_button_position[1] <= mouse_pos[1] <= close_button_position[1] + button_height:
                 running = False
-        elif event.type == pygame.KEYDOWN and not game_over:
-            letter = pygame.key.name(event.key)
+        elif event.type == pygame.KEYUP and not game_over:
+            letter = event.unicode
             if letter.isalpha():
                 input_word += letter
                 if len(input_word) == 5:
@@ -117,28 +119,28 @@ while running:
     window.fill(BLACK)
     # Draw the win streaks
     win_streak_surface = font.render(f"Best Win Streak: {best_win_streak}, Current Win Streak: {current_win_streak}", True, WHITE)
-    window.blit(win_streak_surface, (20, 20))
+    window.blit(win_streak_surface, (20, 25))
     # Draw the lives left
     lives_surface = font.render(f"Lives left: {lives}", True, WHITE)
-    window.blit(lives_surface, (20, 60))
+    window.blit(lives_surface, (20, 50))
     # Draw the attempts left
     attempts_surface = font.render(f"Attempts left: {max_attempts - attempts}", True, WHITE)
-    window.blit(attempts_surface, (20, 100))
+    window.blit(attempts_surface, (20, 75))
     # Draw the guessed word
     for i, l in enumerate(guess_word[0]):
         guess_surface = font.render(l, True, guess_word[1][i])
-        window.blit(guess_surface, (20 + i * 40, 140))
+        window.blit(guess_surface, (20 + i * 40, 100))
     # Draw the current input
     input_word_surface = font.render(f"Current Input: {input_word}", True, WHITE)
-    window.blit(input_word_surface, (20, 180))
+    window.blit(input_word_surface, (20, 125))
     # Draw the previous guesses
     for i, guess in enumerate(guesses):
         for j, l in enumerate(guess[0]):
             guess_surface = font.render(l, True, guess[1][j])
-            window.blit(guess_surface, (20 + j * 40, 220 + i * 40))
+            window.blit(guess_surface, (20 + j * 40, 150 + i * 25))
     # Draw the message and the buttons when the game is over
     if game_over:
-        message_y = 220 + len(guesses) * 40
+        message_y = 150 + len(guesses) * 25
         if message_y + 40 > play_again_button_position[1]: 
             message_y = play_again_button_position[1] - 40
         for i, line in enumerate(message_lines):
