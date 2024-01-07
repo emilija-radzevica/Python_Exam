@@ -21,7 +21,8 @@ GREEN = (0, 255, 0)
 YELLOW = (255, 255, 0)
 
 # Define game variables
-word_list = ["ābols"]
+with open('words.txt', 'r', encoding='utf-8') as f:
+    word_list = [line.strip() for line in f]
 best_win_streak = 0
 current_win_streak = 0
 lives = 3
