@@ -125,6 +125,7 @@ smags
 spāre
 spēks
 svece
+šalle
 šaurs
 tauta
 teikt

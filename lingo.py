@@ -86,7 +86,7 @@ while running:
         elif event.type == pygame.KEYUP and not game_over:
             letter = event.unicode
             if letter.isalpha():
-                input_word += letter
+                input_word += letter.lower()
                 if len(input_word) == 5:
                     guesses.append([input_word, []])  # Add a color for each letter
                     for i, l in enumerate(input_word):
