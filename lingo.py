@@ -4,6 +4,7 @@
 import pygame
 import sys
 import random
+import datetime
 
 # Initialize Pygame
 pygame.init()
@@ -54,6 +55,7 @@ def draw_button(text, position):
 # Game loop
 running = True
 game_over = False
+result_written = False
 while running:
     # Handle events
     for event in pygame.event.get():
@@ -64,23 +66,24 @@ while running:
             if play_again_button_position[0] <= mouse_pos[0] <= play_again_button_position[0] + button_width and play_again_button_position[1] <= mouse_pos[1] <= play_again_button_position[1] + button_height and lives > 0:
                 # Reset game variables for next round
                 target_word = random.choice(word_list)
-                guess_word = [["_" for _ in target_word], [WHITE for _ in target_word]]  # Reset color to WHITE for each letter
+                guess_word = [["_" for _ in target_word], [WHITE for _ in target_word]]
                 attempts = 0
                 input_word = ""
                 guesses = []
                 game_over = False
-                message_lines = []  # Reset the message lines
+                message_lines = []
             elif restart_button_position[0] <= mouse_pos[0] <= restart_button_position[0] + button_width and restart_button_position[1] <= mouse_pos[1] <= restart_button_position[1] + button_height and lives <= 0:
                 # Reset game variables for new game
                 lives = 3
                 current_win_streak = 0
                 target_word = random.choice(word_list)
-                guess_word = [["_" for _ in target_word], [WHITE for _ in target_word]]  # Reset color to WHITE for each letter
+                guess_word = [["_" for _ in target_word], [WHITE for _ in target_word]]
                 attempts = 0
                 input_word = ""
                 guesses = []
                 game_over = False
-                message_lines = []  # Reset the message lines
+                result_written = False
+                message_lines = []
             elif close_button_position[0] <= mouse_pos[0] <= close_button_position[0] + button_width and close_button_position[1] <= mouse_pos[1] <= close_button_position[1] + button_height:
                 running = False
         elif event.type == pygame.KEYUP and not game_over:
@@ -88,9 +91,9 @@ while running:
             if letter.isalpha():
                 input_word += letter.lower()
                 if len(input_word) == 5:
-                    guesses.append([input_word, []])  # Add a color for each letter
+                    guesses.append([input_word, []])
                     for i, l in enumerate(input_word):
-                        if l == target_word[i]:  # Check if the letter is the same as the corresponding letter in the target word
+                        if l == target_word[i]:
                             guess_word[0][i] = l
                             guess_word[1][i] = GREEN
                             guesses[-1][1].append(GREEN)
@@ -103,7 +106,7 @@ while running:
 
     # Update game logic
     if not game_over:
-        if guess_word[0] == list(target_word):  # Compare only the word, not the colors
+        if guess_word[0] == list(target_word):
             message = "You won!"
             game_over = True
             current_win_streak += 1
@@ -150,6 +153,13 @@ while running:
         if lives > 0:
             draw_button("Next Round", play_again_button_position)
         else:
+            if not result_written:
+                now = datetime.datetime.now()
+                date_time = now.strftime("%Y-%m-%d %H:%M:%S")
+                result = f"Date and Time: {date_time}   Current Win Streak: {current_win_streak}\n"
+                with open("results.txt", "a") as f:
+                    f.write(result)
+                result_written = True
             draw_button("Restart Game", restart_button_position)
         
         draw_button("Close", close_button_position)
