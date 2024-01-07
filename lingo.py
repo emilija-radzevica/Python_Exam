@@ -58,6 +58,7 @@ def draw_button(text, position):
 running = True
 game_over = False
 result_written = False
+top_scores = []
 while running:
     # Handle events
     for event in pygame.event.get():
@@ -158,10 +159,23 @@ while running:
             if not result_written:
                 now = datetime.datetime.now()
                 date_time = now.strftime("%Y-%m-%d %H:%M:%S")
-                result = f"Date and Time: {date_time}   Current Win Streak: {current_win_streak}\n"
+                result = f"{date_time} {current_win_streak}\n"
                 with open("results.txt", "a") as f:
                     f.write(result)
                 result_written = True
+                # Read the results.txt file and find the top 5 highest scores
+                with open('results.txt', 'r') as f:
+                    lines = f.readlines()
+                    scores = [(line.split()[0:2], int(line.split()[-1])) for line in lines]
+                    scores.sort(key=lambda x: x[1], reverse=True)
+                    top_scores = scores[:5]
+            # Draw the top 5 scores
+            for i, (date_time, score) in enumerate(top_scores):
+                score_text = f"Top {i+1}    Score: {score}    Achieved on:  {' '.join(date_time)}"
+                score_surface = font.render(score_text, True, WHITE)
+                score_width = score_surface.get_rect().width
+                score_x = window_width - score_width - 20
+                window.blit(score_surface, (score_x, 150 + i * 25))
             draw_button("Restart Game", restart_button_position)
         
         draw_button("Close", close_button_position)
