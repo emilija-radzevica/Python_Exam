@@ -82,20 +82,21 @@ while running:
                 running = False
         elif event.type == pygame.KEYDOWN and not game_over:
             letter = pygame.key.name(event.key)
-            input_word += letter
-            if len(input_word) == 5:
-                guesses.append([input_word, []])  # Add a color for each letter
-                for i, l in enumerate(input_word):
-                    if l == target_word[i]:  # Check if the letter is the same as the corresponding letter in the target word
-                        guess_word[0][i] = l
-                        guess_word[1][i] = GREEN
-                        guesses[-1][1].append(GREEN)
-                    elif l in target_word:
-                        guesses[-1][1].append(YELLOW)
-                    else:
-                        guesses[-1][1].append(WHITE)
-                input_word = ""
-                attempts += 1
+            if letter.isalpha():
+                input_word += letter
+                if len(input_word) == 5:
+                    guesses.append([input_word, []])  # Add a color for each letter
+                    for i, l in enumerate(input_word):
+                        if l == target_word[i]:  # Check if the letter is the same as the corresponding letter in the target word
+                            guess_word[0][i] = l
+                            guess_word[1][i] = GREEN
+                            guesses[-1][1].append(GREEN)
+                        elif l in target_word:
+                            guesses[-1][1].append(YELLOW)
+                        else:
+                            guesses[-1][1].append(WHITE)
+                    input_word = ""
+                    attempts += 1
 
     # Update game logic
     if not game_over:
