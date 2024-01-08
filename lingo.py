@@ -47,10 +47,10 @@ message_lines = ""
 print(guess_word)
 
 # Define button dimensions and positions
-button_width = 200
-button_height = 50
+button_width = 100
+button_height = 30
 play_again_button_position = (window_width // 2 - button_width // 2, window_height//2 - button_height//2)
-restart_button_position = (window_width // 2 - button_width // 2, window_height //2- button_height//2)
+restart_button_position = (window_width//2-button_width//2, 480)
 close_button_position = (window_width // 2 - button_width // 2, window_height - button_height)
 results_button_position = (window_width-120, window_height-45)
 close_results_button_position = (365, 60)
@@ -64,7 +64,6 @@ results_font = pygame.font.SysFont('Arial', 12)
 
 # Function to draw a button
 def draw_button(text, position):
-    pygame.draw.rect(window, WHITE, (*position, button_width, button_height))
     text_surface = font.render(text, True, BLACK)
     text_rect = text_surface.get_rect(center=(position[0] + button_width // 2, position[1] + button_height // 2))
     window.blit(text_surface, text_rect)
@@ -108,7 +107,7 @@ def draw_played_words(played_word_list):
 
 # Function to draw results surface
 def draw_results():
-    results_title = font.render("Tavi rezultāti", True, BLACK)
+    results_title = font.render("Tavi labākie rezultāti", True, BLACK)
     results_title_rect = results_title.get_rect(center = (results_width/2, 30))
     results.blit(results_title, results_title_rect)
 
@@ -179,10 +178,24 @@ while running:
                 game_over = False
                 result_written = False
                 message_lines = []
+                show_results = False
             if results_button_position[0] <= mouse_pos[0] <= results_button_position[0] + 120 and results_button_position[1] <= mouse_pos[1] <= results_button_position[1] + 45:
                 show_results = True
             elif close_results_button_position[0] < mouse_pos[0] <= close_results_button_position[0] + 20 and close_results_button_position[1] <= mouse_pos[1] <= close_results_button_position[1] + 20:
                 show_results = False
+                if lives == 0:
+                    # Reset game variables for new game
+                    lives = 3
+                    current_win_streak = 0
+                    target_word = random.choice(word_list)
+                    guess_word = [["_" for _ in target_word], [WHITE for _ in target_word]]
+                    attempts = 0
+                    input_word = ""
+                    guesses = []
+                    game_over = False
+                    result_written = False
+                    message_lines = []
+                    show_results = False
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN and game_over and lives > 0:
                 # Reset game variables for next round
@@ -281,9 +294,7 @@ while running:
 
     # Draw the message and the buttons when the game is over
     if game_over:
-        game_over = pygame.Surface((window_width/2, window_height/7), pygame.SRCALPHA)
-        game_over.fill((255, 255, 255, 230))
-        window.blit(game_over, (112, 257))
+        game_over = pygame.Surface((window_width, window_height), pygame.SRCALPHA)
         message_y = 150 + len(guesses) * 25
         if message_y + 40 > play_again_button_position[1]: 
             message_y = play_again_button_position[1] - 40
@@ -291,7 +302,9 @@ while running:
             message_surface = font.render(line, True, WHITE)
             game_over.blit(message_surface, (20, message_y + i * 20))
         if lives > 0:
-            draw_button("Nospied 'Enter', lai turpinātu", play_again_button_position)
+            game_over.fill((255, 255, 255, 230))
+            window.blit(game_over, (0, 0))
+            draw_button("Nospied ENTER, lai turpinātu", play_again_button_position)
         else:
             if not result_written:
                 now = datetime.datetime.now()
@@ -300,7 +313,8 @@ while running:
                 with open("results.txt", "a") as f:
                     f.write(result)
                 result_written = True
-                   
+            show_results = True
+            pygame.draw.rect(window, GREEN, (restart_button_position[0], restart_button_position[1], button_width, button_height))     
             draw_button("Jauna spēle", restart_button_position)
 
     pygame.display.update()
