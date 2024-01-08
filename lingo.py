@@ -223,7 +223,7 @@ while running:
                             guess_word[0][i] = l
                             guess_word[1][i] = GREEN
                             guesses[-1][1].append(GREEN)
-                        elif l in target_word:
+                        elif l in target_word.upper():
                             guesses[-1][1].append(YELLOW)
                         else:
                             guesses[-1][1].append(BLACK)
