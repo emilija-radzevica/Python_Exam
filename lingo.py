@@ -64,6 +64,9 @@ results_font = pygame.font.SysFont('Arial', 12)
 
 # Function to draw a button
 def draw_button(text, position):
+    # message_surface = font.render(message, True, BLACK)
+    # message_rect = message_surface.get_rect(center=(position[0] + button_width // 2, position[1] - button_height // 2))
+    # window.blit(message_surface, message_rect)
     text_surface = font.render(text, True, BLACK)
     text_rect = text_surface.get_rect(center=(position[0] + button_width // 2, position[1] + button_height // 2))
     window.blit(text_surface, text_rect)
@@ -227,15 +230,16 @@ while running:
     # Update game logic
     if not game_over:
         if guess_word[0] == list(target_word.upper()):
-            message = "You uzminēji vārdu!"
+            # message = "Tu uzminēji vārdu"
             game_over = True
             current_win_streak += 1
             played_word_list.append(target_word)
         elif attempts >= max_attempts:
-            message_lines = [f"Tu neuzminēji vārdu!", f"Pareizais vārds bija: {target_word}"]
+            # message_lines = [f"Tu neuzminēji vārdu!", f"Pareizais vārds bija: {target_word}"]
             game_over = True
             lives -= 1
             played_word_list.append(target_word)
+            current_win_streak = 0
         
 
     # Render graphics
@@ -300,7 +304,7 @@ while running:
         if message_y + 40 > play_again_button_position[1]: 
             message_y = play_again_button_position[1] - 40
         for i, line in enumerate(message_lines):
-            message_surface = font.render(line, True, WHITE)
+            message_surface = font.render(line, True, BLACK)
             game_over.blit(message_surface, (20, message_y + i * 20))
         if lives > 0:
             game_over.fill((255, 255, 255, 230))
