@@ -239,8 +239,7 @@ while running:
             game_over = True
             lives -= 1
             played_word_list.append(target_word)
-            current_win_streak = 0
-        
+            current_win_streak = 0       
 
     # Render graphics
     window.fill(PEACH)
@@ -268,13 +267,16 @@ while running:
     window.blit(results_text, results_text_rect)
     
     # Draw the current input
-    input_word_surface = font.render(input_word, True, BLACK)
-    window.blit(input_word_surface, (84, 465))
-    # Draw the previous guesses
+    letter_count = 0
+    for i in input_word:
+        input_word_surface = font.render(i, True, BLACK)
+        window.blit(input_word_surface, (84 + letter_count * 68, 465))
+        letter_count += 1
+
     for i, guess in enumerate(guesses):
         for j, l in enumerate(guess[0]):
             guess_surface = font.render(l, True, guess[1][j])
-            window.blit(guess_surface, (84 + j * 40, 113 + i * 70))
+            window.blit(guess_surface, (84 + j * 68, 113 + i * 70))
     
     # Draw results 
     if show_results == True:
