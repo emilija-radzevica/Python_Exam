@@ -276,7 +276,8 @@ while running:
         input_word_surface = font.render(i, True, BLACK)
         window.blit(input_word_surface, (84 + letter_count * 68, 465))
         letter_count += 1
-
+        
+    # draw previous inputs
     for i, guess in enumerate(guesses):
         for j, l in enumerate(guess[0]):
             guess_surface = font.render(l, True, guess[1][j])
