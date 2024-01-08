@@ -49,8 +49,8 @@ print(guess_word)
 # Define button dimensions and positions
 button_width = 200
 button_height = 50
-play_again_button_position = (window_width // 2 - button_width // 2, window_height - 2.5 * button_height)
-restart_button_position = (window_width // 2 - button_width // 2, window_height - 2.5 * button_height)
+play_again_button_position = (window_width // 2 - button_width // 2, window_height//2 - button_height//2)
+restart_button_position = (window_width // 2 - button_width // 2, window_height //2- button_height//2)
 close_button_position = (window_width // 2 - button_width // 2, window_height - button_height)
 results_button_position = (window_width-120, window_height-45)
 close_results_button_position = (365, 60)
@@ -170,7 +170,7 @@ while running:
             if play_again_button_position[0] <= mouse_pos[0] <= play_again_button_position[0] + button_width and play_again_button_position[1] <= mouse_pos[1] <= play_again_button_position[1] + button_height and lives > 0:
                 # Reset game variables for next round
                 target_word = random.choice(word_list)
-                guess_word = [["_" for _ in target_word], [WHITE for _ in target_word]]
+                # guess_word = [["_" for _ in target_word], [WHITE for _ in target_word]]
                 attempts = 0
                 input_word = ""
                 guesses = []
@@ -248,10 +248,6 @@ while running:
     results_text_rect = results_text.get_rect(center = (window_width-50, window_height-20))
     window.blit(results_text, results_text_rect)
     
-    # Draw the guessed word
-    # for i, l in enumerate(guess_word[0]):
-    #     guess_surface = font.render(l, True, guess_word[1][i])
-    #     window.blit(guess_surface, (20 + i * 40, 100))
     # Draw the current input
     input_word_surface = font.render(input_word, True, BLACK)
     window.blit(input_word_surface, (84, 465))
@@ -282,18 +278,19 @@ while running:
         close_results_rect = close_results.get_rect(center = (375, 70))
         window.blit(close_results, close_results_rect)
 
-
-
     # Draw the message and the buttons when the game is over
     if game_over:
+        game_over = pygame.Surface((window_width/2, window_height/7), pygame.SRCALPHA)
+        game_over.fill((255, 255, 255, 230))
+        window.blit(game_over, (112, 257))
         message_y = 150 + len(guesses) * 25
         if message_y + 40 > play_again_button_position[1]: 
             message_y = play_again_button_position[1] - 40
         for i, line in enumerate(message_lines):
             message_surface = font.render(line, True, WHITE)
-            window.blit(message_surface, (20, message_y + i * 20))
+            game_over.blit(message_surface, (20, message_y + i * 20))
         if lives > 0:
-            draw_button("Next Round", play_again_button_position)
+            draw_button("Nākamais vārds", play_again_button_position)
         else:
             if not result_written:
                 now = datetime.datetime.now()
@@ -302,22 +299,8 @@ while running:
                 with open("results.txt", "a") as f:
                     f.write(result)
                 result_written = True
-                # Read the results.txt file and find the top 5 highest scores
-                with open('results.txt', 'r') as f:
-                    lines = f.readlines()
-                    scores = [(line.split()[0:2], int(line.split()[-1])) for line in lines]
-                    scores.sort(key=lambda x: x[1], reverse=True)
-                    top_scores = scores[:5]
-            # Draw the top 5 scores
-            for i, (date_time, score) in enumerate(top_scores):
-                score_text = f"Top {i+1}    Score: {score}    Achieved on:  {' '.join(date_time)}"
-                score_surface = font.render(score_text, True, WHITE)
-                score_width = score_surface.get_rect().width
-                score_x = window_width - score_width - 20
-                window.blit(score_surface, (score_x, 150 + i * 25))
-            draw_button("Restart Game", restart_button_position)
-        
-        draw_button("Close", close_button_position)
+                   
+            draw_button("Jauna spēle", restart_button_position)
 
     pygame.display.update()
 
