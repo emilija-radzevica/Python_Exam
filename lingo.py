@@ -209,11 +209,11 @@ while running:
         elif event.type == pygame.KEYUP and not game_over:
             letter = event.unicode
             if letter.isalpha():
-                input_word += letter.lower()
+                input_word += letter.upper()
                 if len(input_word) == 5:
                     guesses.append([input_word, []])
                     for i, l in enumerate(input_word):
-                        if l == target_word[i]:
+                        if l == target_word[i].upper():
                             guess_word[0][i] = l
                             guess_word[1][i] = GREEN
                             guesses[-1][1].append(GREEN)
@@ -226,7 +226,7 @@ while running:
 
     # Update game logic
     if not game_over:
-        if guess_word[0] == list(target_word):
+        if guess_word[0] == list(target_word.upper()):
             message = "You uzminēji vārdu!"
             game_over = True
             current_win_streak += 1
@@ -240,6 +240,7 @@ while running:
 
     # Render graphics
     window.fill(PEACH)
+    print(target_word)
     
     draw_main_info("Atlikušie gājieni", max_attempts-attempts, False, window_width/6)
     draw_main_info("Uzvaras pēc kārtas", current_win_streak, False, window_width/2)
