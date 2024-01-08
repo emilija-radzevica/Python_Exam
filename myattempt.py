@@ -27,6 +27,7 @@ show_stats = False
 print(target_word)
 print(["_" for _ in target_word])
 print([BLACK for _ in target_word])
+wrong_words_list = ["ābols", "galds", "ziema", "kokle", "volvo", "bēbis"]
 
 # saves games results inside a .txt file
 result_key = str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
@@ -50,7 +51,7 @@ font = pygame.font.SysFont("Times New Roman", 12)
 
 button_width = 180
 button_height = 50
-game.fill(PEACH)
+
 
 def draw_stats():
     stats_title = smallfont.render("Tavi rezultāti", True, BLACK)
@@ -92,28 +93,91 @@ def show_top_result_date(date, placement):
     stats_date_rect = stats_date.get_rect(center = (placement, 200))
     stats.blit(stats_date, stats_date_rect)
 
+def show_lives(life_count):
+    heart_placement = game_width/6*5 - 30
+    for i in range(0, life_count):
+        life = pygame.image.load("img/heart_icon.png")
+        life = pygame.transform.scale(life, (20, 20))
+        life_rect = life.get_rect(center = (heart_placement, 60))
+        game.blit(life,life_rect)
+        heart_placement += 30
+
+def show_wrong_words(wrong_list):
+    x=140
+    if len(wrong_list) < 8:
+        for i in range(0, len(wrong_list)):
+            last_unknown_word = font.render(wrong_list[i] + " ", True, BLACK)
+            game.blit(last_unknown_word, (x, 550))
+            x+=33
+    else:
+        for i in range(len(wrong_list)-8, len(wrong_list)):
+            last_unknown_word = font.render(wrong_list[i] + " ", True, BLACK)
+            game.blit(last_unknown_word, (x, 550))
+            x+=33
+
 #  spēle
 playing = True
 while playing:
-    # game.fill(PEACH)
-    button = pygame.draw.rect(game, BLACK, (100, 50, button_width, button_height))
-    pygame.draw.rect(game, BLACK, (300, 20, 50, 250))
+    game.fill(PEACH)
+
+    moves_left = font.render("Atlikušie gājieni", True, BLACK)
+    win_streak = font.render("Uzvaras pēc kārtas", True, BLACK)
+    lives_left = font.render("Dzīvības", True, BLACK)
+    moves_left_rect = moves_left.get_rect(center = (game_width/6, 30))
+    win_streak_rect = win_streak.get_rect(center = (game_width/2, 30))
+    lives_left_rect = lives_left.get_rect(center = (game_width/6*5, 30))
+    game.blit(moves_left,moves_left_rect)
+    game.blit(win_streak,win_streak_rect)
+    game.blit(lives_left,lives_left_rect)
+
+    moves_left_value = font.render("5", True, BLACK)
+    win_streak_value = font.render("0", True, BLACK)
+    # life = pygame.image.load("img/heart_icon.png")
+    # life = pygame.transform.scale(life, (20, 20))
+    moves_left_value_rect = moves_left.get_rect(center = (game_width/6+35, 60))
+    win_streak_value_rect = win_streak.get_rect(center = (game_width/2+40, 60))
+    # life_rect = life.get_rect(center = (game_width/6*5, 60))
+    game.blit(moves_left_value,moves_left_value_rect)
+    game.blit(win_streak_value,win_streak_value_rect)
+    # game.blit(life,life_rect)
+    show_lives(1)
+
+    grid = pygame.image.load("img/grid.png")
+    grid = pygame.transform.scale(grid, (350, 418))
+    grid_rect = grid.get_rect(center = (game_width/2, game_height/2))
+    game.blit(grid, grid_rect)
+
+    button = pygame.draw.rect(game, BLACK, (100, 550, button_width, button_height))
     one_text = smallfont.render("Statistics", True, GREEN)
     mouse = pygame.mouse.get_pos()
 
-    if 100 <= mouse[0] <= 100 + button_width and 50 <= mouse[1] <= 50 +button_height:
-        button = pygame.draw.rect(game, YELLOW, (100, 50, button_width, button_height))
+    if 100 <= mouse[0] <= 100 + button_width and 550 <= mouse[1] <= 550 +button_height:
+        button = pygame.draw.rect(game, YELLOW, (100, 550, button_width, button_height))
 
     
-    one_text_rect = one_text.get_rect(center = (100 + button_width/2, 50 + button_height/2))
+    one_text_rect = one_text.get_rect(center = (100 + button_width/2, 550 + button_height/2))
 
     game.blit(one_text, one_text_rect)
+
+    guessed_words = font.render("Uzminētie vārdi: 5", True, BLACK)
+    game.blit(guessed_words, (40, 530))
+    unknown_words = font.render("Neuzminētie vārdi: ", True, BLACK)
+    game.blit(unknown_words, (40, 550))
+
+    # target_word = "ābols"
+    show_wrong_words(wrong_words_list)
+    # game.blit(wrong_words_list, (140, 550))
+
+    results = font.render("Rezultāti", True, BLACK)
+    results_rect = guessed_words.get_rect(center = (game_width-20, 580))
+    game.blit(results, results_rect)
+
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
         elif event.type == MOUSEBUTTONDOWN:
-            if 100 <= mouse[0] <= 100 + button_width and 50 <= mouse[1] <= 50 +button_height:
+            if 100 <= mouse[0] <= 100 + button_width and 550 <= mouse[1] <= 550 +button_height:
                 game.fill(GREEN)
                 show_stats = True
 
@@ -135,8 +199,11 @@ while playing:
         close_stats = font.render("X", True, BLACK)
         close_stats_rect = close_stats.get_rect(center = (375, 70))
         game.blit(close_stats, close_stats_rect)
+       
 
         if event.type == MOUSEBUTTONDOWN and 365 <= mouse[0] <= 385 and 60 <= mouse[1] <= 80:
             show_stats = False
-            game.fill(PEACH)
+            wordy = "volvo"
+            wrong_words_list.append(wordy)
+            show_wrong_words(wrong_words_list)
     pygame.display.update()
