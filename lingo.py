@@ -209,6 +209,9 @@ while running:
                 guesses = []
                 game_over = False
                 message_lines = []
+            elif event.key == pygame.K_BACKSPACE and not game_over:
+                if len(input_word)>0:
+                    input_word = input_word.rstrip(input_word[-1])
         elif event.type == pygame.KEYUP and not game_over:
             letter = event.unicode
             if letter.isalpha():
@@ -234,6 +237,7 @@ while running:
             game_over = True
             current_win_streak += 1
             played_word_list.append(target_word)
+            correctly_guessed_word_count += 1
         elif attempts >= max_attempts:
             # message_lines = [f"Tu neuzminēji vārdu!", f"Pareizais vārds bija: {target_word}"]
             game_over = True
@@ -316,7 +320,7 @@ while running:
             if not result_written:
                 now = datetime.datetime.now()
                 date_time = now.strftime("%Y-%m-%d %H:%M:%S")
-                result = f"{date_time} {current_win_streak}\n"
+                result = f"{date_time} {correctly_guessed_word_count}\n"
                 with open("results.txt", "a") as f:
                     f.write(result)
                 result_written = True
