@@ -1,3 +1,6 @@
+# Izveidoja: Emīlija Radzeviča_er22080 un Elīza Riekstiņa_er22060 
+# Pabeigts: 08.01.2024.
+
 # -*- coding: utf-8 -*-
 
 # Import the necessary modules
@@ -276,7 +279,7 @@ while running:
         input_word_surface = font.render(i, True, BLACK)
         window.blit(input_word_surface, (84 + letter_count * 68, 465))
         letter_count += 1
-        
+
     # draw previous inputs
     for i, guess in enumerate(guesses):
         for j, l in enumerate(guess[0]):
