@@ -167,16 +167,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            if play_again_button_position[0] <= mouse_pos[0] <= play_again_button_position[0] + button_width and play_again_button_position[1] <= mouse_pos[1] <= play_again_button_position[1] + button_height and lives > 0:
-                # Reset game variables for next round
-                target_word = random.choice(word_list)
-                # guess_word = [["_" for _ in target_word], [WHITE for _ in target_word]]
-                attempts = 0
-                input_word = ""
-                guesses = []
-                game_over = False
-                message_lines = []
-            elif restart_button_position[0] <= mouse_pos[0] <= restart_button_position[0] + button_width and restart_button_position[1] <= mouse_pos[1] <= restart_button_position[1] + button_height and lives <= 0:
+            if restart_button_position[0] <= mouse_pos[0] <= restart_button_position[0] + button_width and restart_button_position[1] <= mouse_pos[1] <= restart_button_position[1] + button_height and lives <= 0:
                 # Reset game variables for new game
                 lives = 3
                 current_win_streak = 0
@@ -188,10 +179,20 @@ while running:
                 game_over = False
                 result_written = False
                 message_lines = []
-            elif results_button_position[0] <= mouse_pos[0] <= results_button_position[0] + 120 and results_button_position[1] <= mouse_pos[1] <= results_button_position[1] + 45:
+            if results_button_position[0] <= mouse_pos[0] <= results_button_position[0] + 120 and results_button_position[1] <= mouse_pos[1] <= results_button_position[1] + 45:
                 show_results = True
             elif close_results_button_position[0] < mouse_pos[0] <= close_results_button_position[0] + 20 and close_results_button_position[1] <= mouse_pos[1] <= close_results_button_position[1] + 20:
                 show_results = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RETURN and game_over and lives > 0:
+                # Reset game variables for next round
+                target_word = random.choice(word_list)
+                # guess_word = [["_" for _ in target_word], [WHITE for _ in target_word]]
+                attempts = 0
+                input_word = ""
+                guesses = []
+                game_over = False
+                message_lines = []
         elif event.type == pygame.KEYUP and not game_over:
             letter = event.unicode
             if letter.isalpha():
@@ -290,7 +291,7 @@ while running:
             message_surface = font.render(line, True, WHITE)
             game_over.blit(message_surface, (20, message_y + i * 20))
         if lives > 0:
-            draw_button("Nākamais vārds", play_again_button_position)
+            draw_button("Nospied 'Enter', lai turpinātu", play_again_button_position)
         else:
             if not result_written:
                 now = datetime.datetime.now()
