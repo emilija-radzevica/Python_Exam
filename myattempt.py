@@ -11,6 +11,8 @@ game_width = 450
 game_height = 600
 game = pygame.display.set_mode(size = (game_width, game_height))
 pygame.display.set_caption("Faux Lingo 2024")
+# stats = pygame.Surface((300, 460), pygame.SRCALPHA)
+# stats.fill((255, 255, 255, 230))
 
 PEACH = (254, 241, 207)
 BLACK = (0, 0, 0)
@@ -24,9 +26,6 @@ correctly_guessed_words = 0
 lives = 3
 target_word = random.choice(words.word_list)
 show_stats = False
-print(target_word)
-print(["_" for _ in target_word])
-print([BLACK for _ in target_word])
 wrong_words_list = ["ābols", "galds", "ziema", "kokle", "volvo", "bēbis"]
 
 # saves games results inside a .txt file
@@ -191,7 +190,7 @@ while playing:
         elif 200 <= mouse[0] <= 250 and 150 <= mouse[1] <= 260:
             pygame.draw.rect(stats, PEACH, (125, 100, 50, 90))
             show_top_result_date(second_key, 150)
-        if 260 <= mouse[0] <= 310 and 210 <= mouse[1] <= 260:
+        elif 260 <= mouse[0] <= 310 and 210 <= mouse[1] <= 260:
             pygame.draw.rect(stats, PEACH, (185, 160, 50, 30))
             show_top_result_date(third_key, 210)
         game.blit(stats, (75, 70))
