@@ -20,7 +20,6 @@ pygame.display.set_caption("Faux Lingo 2024")
 results_width = 300
 results_height = 460
 
-
 # Define colors
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -63,7 +62,6 @@ font = pygame.font.SysFont('Arial', 16)
 letter_font = pygame.font.SysFont('Arial', 20)
 main_font = pygame.font.SysFont('Arial', 16)
 results_font = pygame.font.SysFont('Arial', 12)
-
 
 # Function to draw a button
 def draw_button(text, position):
