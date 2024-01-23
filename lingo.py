@@ -23,8 +23,8 @@ results_height = 460
 # Define colors
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-GREEN = (150, 245, 71)
-YELLOW = (245, 237, 73)
+GREEN = (4, 175, 112)
+YELLOW = (139, 128, 0)
 PEACH = (254, 241, 207)
 
 # Define game variables
@@ -59,7 +59,7 @@ close_results_button_position = (365, 60)
 
 # Create a font objects
 font = pygame.font.SysFont('Arial', 16)
-letter_font = pygame.font.SysFont('Arial', 20)
+letter_font = pygame.font.SysFont('Arial', 20, bold=True)
 main_font = pygame.font.SysFont('Arial', 16)
 results_font = pygame.font.SysFont('Arial', 12)
 
@@ -274,14 +274,14 @@ while running:
     # Draw the current input
     letter_count = 0
     for i in input_word:
-        input_word_surface = font.render(i, True, BLACK)
+        input_word_surface = letter_font.render(i, True, BLACK)
         window.blit(input_word_surface, (84 + letter_count * 68, 465))
         letter_count += 1
 
     # draw previous inputs
     for i, guess in enumerate(guesses):
         for j, l in enumerate(guess[0]):
-            guess_surface = font.render(l, True, guess[1][j])
+            guess_surface = letter_font.render(l, True, guess[1][j])
             window.blit(guess_surface, (84 + j * 68, 113 + i * 70))
     
     # Draw results 
